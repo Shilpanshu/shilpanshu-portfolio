@@ -4,7 +4,7 @@ import { Menu, X } from 'lucide-react';
 const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const navItems = ['About', 'Expertise', 'Work', 'Connect'];
+  const navItems = ['About', 'Services', 'Expertise', 'Work', 'Connect'];
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -18,16 +18,21 @@ const Navigation: React.FC = () => {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex gap-8 items-center">
-          {navItems.map((item, i) => (
-            <a
-              key={i}
-              href={`#${item.toLowerCase()}`}
-              className="group relative text-sm font-mono text-white/70 hover:text-brand-accent transition-colors uppercase tracking-wider"
-            >
-              <span className="mr-1 text-[10px] opacity-0 group-hover:opacity-100 transition-opacity text-brand-accent">{`0${i + 1}`}</span>
-              {item}
-            </a>
-          ))}
+          {navItems.map((item, i) => {
+            const isService = item === 'Services';
+            const linkHref = isService ? '/services' : `/#${item.toLowerCase()}`;
+
+            return (
+              <a
+                key={i}
+                href={linkHref}
+                className="group relative text-sm font-mono text-white/70 hover:text-brand-accent transition-colors uppercase tracking-wider"
+              >
+                <span className="mr-1 text-[10px] opacity-0 group-hover:opacity-100 transition-opacity text-brand-accent">{`0${i + 1}`}</span>
+                {item}
+              </a>
+            );
+          })}
           <a
             href="/assets/resume.pdf"
             target="_blank"
@@ -55,7 +60,7 @@ const Navigation: React.FC = () => {
           {navItems.map((item, i) => (
             <a
               key={i}
-              href={`#${item.toLowerCase()}`}
+              href={item === 'Services' ? '/services' : `/#${item.toLowerCase()}`}
               onClick={() => setIsOpen(false)}
               className="font-display text-5xl font-bold text-white hover:text-brand-accent transition-colors"
             >

@@ -27,14 +27,14 @@ const Projects: React.FC = () => {
             <div className="max-w-7xl mx-auto">
                 <div className="flex items-end justify-between mb-20 border-b border-white/10 pb-6">
                     <h2 className="font-display text-4xl md:text-6xl font-bold text-white">SELECTED <br /> WORKS</h2>
-                    <span className="font-mono text-brand-accent text-sm hidden md:block">[ 2023 - 2025 ]</span>
+                    <span className="font-mono text-brand-accent text-sm hidden md:block">[ 2023 - 2026 ]</span>
                 </div>
 
                 <div className="flex flex-col">
                     {PROJECTS.map((project, idx) => (
                         <Link
                             key={idx}
-                            to={`/project/${project.id}`}
+                            to={project.link && project.link !== '#' ? project.link : `/project/${project.id}`}
                             className="group relative border-b border-white/10 py-12 transition-colors hover:bg-white/5 block cursor-pointer"
                             onMouseEnter={() => setHoveredProject(idx)}
                             onMouseLeave={() => setHoveredProject(null)}
