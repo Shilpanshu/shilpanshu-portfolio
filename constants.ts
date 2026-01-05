@@ -115,6 +115,19 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
 
 export const PROJECTS: Project[] = [
   {
+    id: "creation-toolkit",
+    title: "Creation Toolkit / Services",
+    year: "2026",
+    description: "A suite of intelligent, client-side AI tools: ATS Scanner, Background Remover, and more.",
+    longDescription: "A comprehensive suite of browser-based utilities designed for creators and developers. Includes an AI Background Remover using SAM 2, an Image-to-Palette extractor, a secure client-side File Converter Hub, and an ATS Resume Scanner powered by Google Gemini 2.5 Flash.",
+    tags: ["React", "AI", "Gemini", "SAM 2", "Client-Side"],
+    icon: "web",
+    link: "/services",
+    images: [
+      "https://images.unsplash.com/photo-1664575602276-acd073f104c1?q=80&w=2070&auto=format&fit=crop"
+    ]
+  },
+  {
     id: "vto-system",
     title: "Virtual Try-On System",
     year: "2025",
