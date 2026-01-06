@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,10 +12,10 @@ const Navigation: React.FC = () => {
   return (
     <>
       <nav className="fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center mix-blend-difference">
-        <a href="#home" className="flex items-center gap-2 cursor-pointer z-50">
+        <Link to="/" className="flex items-center gap-2 cursor-pointer z-50">
           <span className="font-mono text-xs text-brand-accent">[001]</span>
           <span className="font-display font-bold text-xl text-white tracking-widest">SHILPANSHU</span>
-        </a>
+        </Link>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex gap-8 items-center">

@@ -9,6 +9,7 @@ import BackgroundRemover from './components/tools/BackgroundRemover';
 import PaletteExtractor from './components/tools/PaletteExtractor';
 import FileConverter from './components/tools/FileConverter';
 import ResumeImprover from './components/tools/ResumeImprover';
+import SmartImageResizer from './components/tools/SmartImageResizer';
 
 const App: React.FC = () => {
   return (
@@ -22,6 +23,7 @@ const App: React.FC = () => {
           <Route path="/services/palette-extractor" element={<PaletteExtractor />} />
           <Route path="/services/file-converter" element={<FileConverter />} />
           <Route path="/services/resume-improver" element={<ResumeImprover />} />
+          <Route path="/services/smart-image-resizer" element={<SmartImageResizer />} />
           <Route path="/project/ai-fashion" element={<AIGeneration />} />
           <Route path="/project/:id" element={<ProjectPage />} />
         </Routes>

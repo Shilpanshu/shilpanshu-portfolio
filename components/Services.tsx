@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Eraser, FileText, Palette, FileOutput, ArrowRight, ScanSearch } from 'lucide-react';
+import { Eraser, FileText, Palette, FileOutput, ArrowRight, ScanSearch, Crop } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Navigation from './Navigation';
 
@@ -40,6 +40,15 @@ const tools = [
     color: 'text-emerald-500',
     gradient: 'from-emerald-500/20 to-green-500/20',
     link: '/services/file-converter'
+  },
+  {
+    id: 'image-resizer',
+    title: 'Smart Image Resizer',
+    description: 'Crop, resize, and compress images to exact dimensions and file sizes.',
+    icon: Crop,
+    color: 'text-teal-400',
+    gradient: 'from-teal-500/20 to-cyan-500/20',
+    link: '/services/smart-image-resizer'
   }
 ];
 
