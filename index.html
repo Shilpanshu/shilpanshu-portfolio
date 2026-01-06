@@ -1,103 +1,153 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Shilpanshu | R&D Creative Technologist</title>
-    <meta name="description" content="Portfolio of Shilpanshu, specializing in Computer Vision, Automation, and Applied ML in Fashion Tech." />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-              display: ['Space Grotesk', 'sans-serif'],
-              mono: ['JetBrains Mono', 'monospace'],
-            },
-            colors: {
-              brand: {
-                accent: '#00f0ff', // Cyberpunk Cyan
-                dark: '#050505',   // Deep Black
-                panel: '#111111',  // Panel Grey
-                text: '#e0e0e0',
-              }
-            },
-            backgroundImage: {
-              'grid-pattern': "linear-gradient(to right, #1f1f1f 1px, transparent 1px), linear-gradient(to bottom, #1f1f1f 1px, transparent 1px)",
-            },
-            animation: {
-              'spin-slow': 'spin 10s linear infinite',
-              'marquee': 'marquee 25s linear infinite',
-              'marquee-reverse': 'marqueeReverse 25s linear infinite',
-              'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            },
-            keyframes: {
-              marquee: {
-                '0%': { transform: 'translateX(0%)' },
-                '100%': { transform: 'translateX(-100%)' },
-              },
-              marqueeReverse: {
-                '0%': { transform: 'translateX(-100%)' },
-                '100%': { transform: 'translateX(0%)' },
-              },
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shilpanshu | Free Online Tools: Background Remover, Resume Scanner & More</title>
+  <meta name="description"
+    content="Free, privacy-focused online tools running directly in your browser. Remove backgrounds, scan resumes for ATS, extract color palettes, and convert files securely." />
+  <meta name="keywords"
+    content="Background Remover, Remove Background, Free, ATS Resume Scanner, Resume Checker, Palette Extractor, Color Picker, File Converter, Online Tools, Privacy Focused, Client Side" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Shilpanshu's Toolkit",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "hasPart": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "AI Background Remover",
+          "applicationCategory": "MultimediaApplication",
+          "description": "Instantly remove backgrounds from images using simplified client-side AI."
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "ATS Resume Scanner",
+          "applicationCategory": "BusinessApplication",
+          "description": "Check your resume against ATS bots using Gemini AI."
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Palette Extractor",
+          "applicationCategory": "DesignApplication",
+          "description": "Extract beautiful color palettes from any image automatically."
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "File Converter Hub",
+          "applicationCategory": "UtilitiesApplication",
+          "description": "Secure, private file conversions entirely in your browser."
+        }
+      ]
+    }
+    </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              accent: '#00f0ff', // Cyberpunk Cyan
+              dark: '#050505',   // Deep Black
+              panel: '#111111',  // Panel Grey
+              text: '#e0e0e0',
             }
+          },
+          backgroundImage: {
+            'grid-pattern': "linear-gradient(to right, #1f1f1f 1px, transparent 1px), linear-gradient(to bottom, #1f1f1f 1px, transparent 1px)",
+          },
+          animation: {
+            'spin-slow': 'spin 10s linear infinite',
+            'marquee': 'marquee 25s linear infinite',
+            'marquee-reverse': 'marqueeReverse 25s linear infinite',
+            'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            marquee: {
+              '0%': { transform: 'translateX(0%)' },
+              '100%': { transform: 'translateX(-100%)' },
+            },
+            marqueeReverse: {
+              '0%': { transform: 'translateX(-100%)' },
+              '100%': { transform: 'translateX(0%)' },
+            },
           }
         }
       }
-    </script>
-    <style>
-      body {
-        cursor: none; /* Hide default cursor */
-        background-color: #050505;
-        overflow-x: hidden;
-      }
-      
-      /* Custom Scrollbar */
-      ::-webkit-scrollbar {
-        width: 6px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #050505; 
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #333; 
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #00f0ff; 
-      }
+    }
+  </script>
+  <style>
+    body {
+      cursor: none;
+      /* Hide default cursor */
+      background-color: #050505;
+      overflow-x: hidden;
+    }
 
-      .text-outline {
-        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
-        color: transparent;
-      }
-      
-      .hover-reveal-image {
-        pointer-events: none;
-        position: fixed;
-        z-index: 40;
-        top: 0;
-        left: 0;
-        transform: translate(-50%, -50%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
 
-      /* Noise overlay */
-      .noise-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 9998;
-        opacity: 0.03;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
-      }
-    </style>
-    <script type="importmap">
+    ::-webkit-scrollbar-track {
+      background: #050505;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #333;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00f0ff;
+    }
+
+    .text-outline {
+      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+      color: transparent;
+    }
+
+    .hover-reveal-image {
+      pointer-events: none;
+      position: fixed;
+      z-index: 40;
+      top: 0;
+      left: 0;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    /* Noise overlay */
+    .noise-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+    }
+  </style>
+  <script type="importmap">
     {
       "imports": {
         "react": "https://esm.sh/react@^19.2.3",
@@ -109,9 +159,11 @@
     </script>
   <link rel="stylesheet" href="/index.css">
 </head>
-  <body class="bg-brand-dark text-brand-text antialiased selection:bg-brand-accent selection:text-black">
-    <div id="root"></div>
-    <div class="noise-overlay"></div>
+
+<body class="bg-brand-dark text-brand-text antialiased selection:bg-brand-accent selection:text-black">
+  <div id="root"></div>
+  <div class="noise-overlay"></div>
   <script type="module" src="/index.tsx"></script>
 </body>
+
 </html>
