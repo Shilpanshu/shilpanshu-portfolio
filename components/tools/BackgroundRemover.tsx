@@ -296,17 +296,7 @@ const BackgroundRemover: React.FC = () => {
                     <h2 className="font-display font-medium text-slate-200 mb-6">Settings</h2>
 
                     {/* Backend Config */}
-                    <div className="mb-8">
-                        <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Server URL</label>
-                        <input
-                            type="text"
-                            value={backendUrl}
-                            onChange={(e) => setBackendUrl(e.target.value)}
-                            className="w-full bg-black/20 border border-white/10 rounded px-3 py-2 text-xs text-slate-300 focus:border-brand-accent focus:outline-none"
-                            placeholder="https://...hf.space"
-                        />
-                        <p className="text-[10px] text-slate-600 mt-1">Direct link to your running HF Space</p>
-                    </div>
+
 
                     <div className="p-4 bg-white/5 rounded-xl border border-white/10">
                         <h4 className="flex items-center gap-2 text-sm font-medium mb-1">
