@@ -21,7 +21,7 @@ Vercel is the industry standard for React apps.
     git add .
     git commit -m "Initial commit"
     git branch -M main
-    git remote add origin https://github.com/YOUR_USERNAME/shilpanshu-portfolio.git
+    git remote add origin https://github.com/Shilpanshu/shilpanshu-portfolio.git
     git push -u origin main
     ```
 
@@ -71,3 +71,15 @@ If you don't want to use GitHub, you can just drag and drop your files.
 | **Domain** | Connects to Sites | Connects to Vercel/Netlify DNS |
 
 Once you update the DNS records, `shilpanshu.site` will stop showing the old Google Site and start showing this new Portfolio.
+
+## Troubleshooting: Git Authentication Error
+If you see **"Password authentication is not supported"** when pushing:
+1.  Go to GitHub.com -> Click your profile photo -> **Settings**.
+2.  On the left, scroll down to **Developer settings** -> **Personal access tokens** -> **Tokens (classic)**.
+3.  Click **Generate new token (classic)**.
+4.  Give it a name (e.g., "Portfolio"), set Expiration to "No expiration", and check the **repo** box.
+5.  Click **Generate token**.
+6.  **Copy the long code** starting with `ghp_`.
+7.  In your terminal, run `git push -u origin main` again.
+8.  Username: `Shilpanshu`
+9.  Password: **Paste the token you just copied** (It won't show on screen, just paste and hit Enter).
