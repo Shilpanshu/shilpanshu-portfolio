@@ -6,7 +6,10 @@ import numpy as np
 import cv2
 import io
 import json
-from PIL import Image
+from PIL import Image, ImageOps
+import torch
+from torchvision import transforms
+from transformers import AutoModelForImageSegmentation
 
 app = FastAPI()
 
@@ -19,13 +22,76 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load SAM 2 model (Base version for speed/memory balance on Free Tier)
-# It will auto-download on first run
-model = SAM("sam2.1_b.pt")
+# --- MODELS ---
+device = "cuda" if torch.cuda.is_available() else "cpu"
+print(f"Using device: {device}")
+
+# Set precision as per user script (if available in this torch version)
+try:
+    torch.set_float32_matmul_precision("high")
+except:
+    pass
+
+# 1. SAM 2 (For Interactive Segmentation)
+sam_model = SAM("sam2.1_b.pt")
+
+# 2. BiRefNet (For Auto Background Removal)
+print("Loading BiRefNet...")
+try:
+    birefnet = AutoModelForImageSegmentation.from_pretrained(
+        "ZhengPeng7/BiRefNet", trust_remote_code=True
+    )
+    birefnet.to(device)
+    print("BiRefNet Loaded Successfully.")
+except Exception as e:
+    print(f"Failed to load BiRefNet: {e}")
+    birefnet = None
+
+# Stats
+transform_image = transforms.Compose([
+    transforms.Resize((1024, 1024)),
+    transforms.ToTensor(),
+    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+])
 
 @app.get("/")
 def health_check():
-    return {"status": "running", "model": "sam2.1_b"}
+    return {"status": "running", "device": device, "models": ["sam2.1_b", "BiRefNet"]}
+
+@app.post("/remove-bg")
+async def remove_background(file: UploadFile = File(...)):
+    if not birefnet:
+        return {"error": "BiRefNet model failed to load on server."}
+
+    # 1. Read Image
+    contents = await file.read()
+    image = Image.open(io.BytesIO(contents))
+    
+    # --- FIX: Handle EXIF Rotation (User's 'load_img' likely did this) ---
+    image = ImageOps.exif_transpose(image)
+    image = image.convert("RGB")
+
+    # 2. Preprocess
+    image_size = image.size
+    input_images = transform_image(image).unsqueeze(0).to(device)
+
+    # 3. Inference
+    with torch.no_grad():
+       preds = birefnet(input_images)[-1].sigmoid().cpu()
+
+    pred = preds[0].squeeze()
+
+    # 4. Process Mask
+    pred_pil = transforms.ToPILImage()(pred)
+    mask = pred_pil.resize(image_size)
+
+    # 5. Apply Alpha
+    image.putalpha(mask)
+
+    # 6. Return PNG
+    img_byte_arr = io.BytesIO()
+    image.save(img_byte_arr, format='PNG')
+    return Response(content=img_byte_arr.getvalue(), media_type="image/png")
 
 @app.post("/predict")
 async def predict(
@@ -52,7 +118,7 @@ async def predict(
     # However, 'model.predict(source=img, bboxes=...)' is supported. 
     # Points are supported via 'points' argument in recent versions.
     
-    results = model.predict(
+    results = sam_model.predict(
         source=img,
         points=points_list,
         labels=labels_list,

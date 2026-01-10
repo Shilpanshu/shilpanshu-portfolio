@@ -4,6 +4,7 @@ import { jsPDF } from 'jspdf';
 import { FileOutput, Upload, Download, Loader2, FileType, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navigation from '../Navigation';
+import ServiceLayout from '../layout/ServiceLayout';
 
 type ConversionType = 'csv-to-excel' | 'image-to-pdf' | 'excel-to-json';
 
@@ -135,105 +136,125 @@ const FileConverter: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#0f1115] text-white">
-            <Navigation />
-            <div className="max-w-6xl mx-auto px-6 pt-24 pb-12">
+        <ServiceLayout
+            title="Free AI File Converter - Convert Images & PDFs Online"
+            description="Convert files instantly for free. Supports JPG to PNG, PNG to JPG, PDF to Image, Excel to CSV, and more. 100% Client-side and secure."
+            keywords="file converter online, image converter, pdf converter, jpg to png, webp converter, excel to csv, json converter"
+            heroTitle="Universal File Converter"
+            heroDescription="Convert your files to any format instantly. Secure, fast, and free. No software installation required. Works entirely in your browser."
+            howItWorks={[
+                { step: "Select File", description: "Drag & drop your file (Image, PDF, Excel, CSV)." },
+                { step: "Choose Format", description: "Select your desired output format from the dropdown." },
+                { step: "Instant Convert", description: "Instant local conversion with no server upload." }
+            ]}
+            useCases={["Office Workflow", "Data Processing", "Image Format Switching", "PDF Management"]}
+            faqs={[
+                { question: "Is it secure?", answer: "Yes, all conversions happen 100% locally in your browser. Your files never leave your device." },
+                { question: "What formats are supported?", answer: "We support JPG, PNG, WebP, PDF, Excel, CSV, and JSON." },
+                { question: "Is it free?", answer: "Yes, completely free forever." },
+                { question: "Is there a file size limit?", answer: "Since it's local, there is no strict limit, but large files depend on your device memory." }
+            ]}
+        >
+            <div className="min-h-screen bg-[#0f1115] text-white">
+                <Navigation />
+                <div className="max-w-6xl mx-auto px-6 pt-24 pb-12">
 
-                <div className="text-center mb-12">
-                    <h1 className="text-4xl md:text-5xl font-display font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400 mb-4">
-                        Universal File Converter
-                    </h1>
-                    <p className="text-slate-400 text-lg">
-                        The ultimate student utility. Convert images, documents, and data locally.
-                    </p>
-                </div>
+                    <div className="text-center mb-12">
+                        <h1 className="text-4xl md:text-5xl font-display font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400 mb-4">
+                            Universal File Converter
+                        </h1>
+                        <p className="text-slate-400 text-lg">
+                            The ultimate student utility. Convert images, documents, and data locally.
+                        </p>
+                    </div>
 
-                <div className="max-w-3xl mx-auto bg-[#181a1f] border border-white/5 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
-                    {/* Background Decor */}
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
+                    <div className="max-w-3xl mx-auto bg-[#181a1f] border border-white/5 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+                        {/* Background Decor */}
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
 
-                    {!file ? (
-                        <label className="flex flex-col items-center justify-center p-12 border-2 border-dashed border-white/10 rounded-2xl hover:bg-white/5 hover:border-emerald-500/50 transition-all cursor-pointer group">
-                            <div className="w-20 h-20 bg-[#0f1115] rounded-full flex items-center justify-center mb-6 shadow-inner group-hover:scale-110 transition-transform">
-                                <Upload className="w-8 h-8 text-slate-400 group-hover:text-emerald-400" />
-                            </div>
-                            <h3 className="text-xl font-bold text-white mb-2">Drop your file here</h3>
-                            <p className="text-slate-500 text-sm mb-1">Supports: JPG, PNG, Excel, CSV, JSON</p>
-                            <input type="file" className="hidden" onChange={handleFileChange} />
-                        </label>
-                    ) : (
-                        <div className="space-y-8">
-                            {/* File Info */}
-                            <div className="flex items-center gap-4 bg-black/20 p-4 rounded-xl border border-white/5">
-                                <div className="w-12 h-12 bg-emerald-500/20 text-emerald-400 rounded-lg flex items-center justify-center">
-                                    <FileType className="w-6 h-6" />
+                        {!file ? (
+                            <label className="flex flex-col items-center justify-center p-12 border-2 border-dashed border-white/10 rounded-2xl hover:bg-white/5 hover:border-emerald-500/50 transition-all cursor-pointer group">
+                                <div className="w-20 h-20 bg-[#0f1115] rounded-full flex items-center justify-center mb-6 shadow-inner group-hover:scale-110 transition-transform">
+                                    <Upload className="w-8 h-8 text-slate-400 group-hover:text-emerald-400" />
                                 </div>
-                                <div className="flex-1">
-                                    <h4 className="font-medium text-white">{file.name}</h4>
-                                    <p className="text-xs text-slate-500">{(file.size / 1024).toFixed(1)} KB • {file.type || 'Unknown Type'}</p>
-                                </div>
-                                <button onClick={() => { setFile(null); setDownloadUrl(null); }} className="text-slate-500 hover:text-white p-2">
-                                    <Upload className="w-5 h-5 rotate-45" />
-                                </button>
-                            </div>
-
-                            {/* Controls */}
-                            {!downloadUrl && !isConverting && (
-                                <div className="flex flex-col md:flex-row gap-4 items-center justify-center animate-in fade-in slide-in-from-bottom-4">
-                                    <div className="flex items-center gap-3">
-                                        <span className="text-slate-400">Convert to:</span>
-                                        <select
-                                            value={outputFormat}
-                                            onChange={(e) => setOutputFormat(e.target.value)}
-                                            className="bg-black/30 border border-white/10 text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"
-                                        >
-                                            {getSupportedOutputs(file.type, file.name).map(fmt => (
-                                                <option key={fmt} value={fmt}>{fmt.toUpperCase()}</option>
-                                            ))}
-                                        </select>
+                                <h3 className="text-xl font-bold text-white mb-2">Drop your file here</h3>
+                                <p className="text-slate-500 text-sm mb-1">Supports: JPG, PNG, Excel, CSV, JSON</p>
+                                <input type="file" className="hidden" onChange={handleFileChange} />
+                            </label>
+                        ) : (
+                            <div className="space-y-8">
+                                {/* File Info */}
+                                <div className="flex items-center gap-4 bg-black/20 p-4 rounded-xl border border-white/5">
+                                    <div className="w-12 h-12 bg-emerald-500/20 text-emerald-400 rounded-lg flex items-center justify-center">
+                                        <FileType className="w-6 h-6" />
                                     </div>
-                                    <button
-                                        onClick={convert}
-                                        className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-8 py-2 rounded-lg transition-colors shadow-lg shadow-emerald-500/20 flex items-center gap-2"
-                                    >
-                                        Convert File
+                                    <div className="flex-1">
+                                        <h4 className="font-medium text-white">{file.name}</h4>
+                                        <p className="text-xs text-slate-500">{(file.size / 1024).toFixed(1)} KB • {file.type || 'Unknown Type'}</p>
+                                    </div>
+                                    <button onClick={() => { setFile(null); setDownloadUrl(null); }} className="text-slate-500 hover:text-white p-2">
+                                        <Upload className="w-5 h-5 rotate-45" />
                                     </button>
                                 </div>
-                            )}
 
-                            {/* Loading */}
-                            {isConverting && (
-                                <div className="text-center py-8">
-                                    <Loader2 className="w-10 h-10 text-emerald-500 animate-spin mx-auto mb-4" />
-                                    <p className="text-slate-300">Processing conversion...</p>
-                                </div>
-                            )}
-
-                            {/* Success */}
-                            {downloadUrl && (
-                                <div className="text-center bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-8 animate-in zoom-in-95">
-                                    <div className="w-16 h-16 bg-emerald-500 text-black rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-500/20">
-                                        <Check className="w-8 h-8" />
+                                {/* Controls */}
+                                {!downloadUrl && !isConverting && (
+                                    <div className="flex flex-col md:flex-row gap-4 items-center justify-center animate-in fade-in slide-in-from-bottom-4">
+                                        <div className="flex items-center gap-3">
+                                            <span className="text-slate-400">Convert to:</span>
+                                            <select
+                                                value={outputFormat}
+                                                onChange={(e) => setOutputFormat(e.target.value)}
+                                                className="bg-black/30 border border-white/10 text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"
+                                            >
+                                                {getSupportedOutputs(file.type, file.name).map(fmt => (
+                                                    <option key={fmt} value={fmt}>{fmt.toUpperCase()}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <button
+                                            onClick={convert}
+                                            className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-8 py-2 rounded-lg transition-colors shadow-lg shadow-emerald-500/20 flex items-center gap-2"
+                                        >
+                                            Convert File
+                                        </button>
                                     </div>
-                                    <h3 className="text-xl font-bold text-white mb-2">Done!</h3>
-                                    <p className="text-slate-400 mb-6">Your file has been converted to .{outputFormat}</p>
-                                    <a
-                                        href={downloadUrl}
-                                        download={downloadName}
-                                        className="inline-flex items-center gap-2 bg-white text-black font-bold px-8 py-3 rounded-xl hover:bg-slate-200 transition-colors"
-                                    >
-                                        <Download className="w-5 h-5" />
-                                        Download File
-                                    </a>
-                                </div>
-                            )}
+                                )}
 
-                            {error && <p className="text-red-400 text-center">{error}</p>}
-                        </div>
-                    )}
+                                {/* Loading */}
+                                {isConverting && (
+                                    <div className="text-center py-8">
+                                        <Loader2 className="w-10 h-10 text-emerald-500 animate-spin mx-auto mb-4" />
+                                        <p className="text-slate-300">Processing conversion...</p>
+                                    </div>
+                                )}
+
+                                {/* Success */}
+                                {downloadUrl && (
+                                    <div className="text-center bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-8 animate-in zoom-in-95">
+                                        <div className="w-16 h-16 bg-emerald-500 text-black rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-500/20">
+                                            <Check className="w-8 h-8" />
+                                        </div>
+                                        <h3 className="text-xl font-bold text-white mb-2">Done!</h3>
+                                        <p className="text-slate-400 mb-6">Your file has been converted to .{outputFormat}</p>
+                                        <a
+                                            href={downloadUrl}
+                                            download={downloadName}
+                                            className="inline-flex items-center gap-2 bg-white text-black font-bold px-8 py-3 rounded-xl hover:bg-slate-200 transition-colors"
+                                        >
+                                            <Download className="w-5 h-5" />
+                                            Download File
+                                        </a>
+                                    </div>
+                                )}
+
+                                {error && <p className="text-red-400 text-center">{error}</p>}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
+        </ServiceLayout>
     );
 };
 

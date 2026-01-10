@@ -2,33 +2,50 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.shilpanshu.site/</loc>
-    <lastmod>2026-01-06</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2025-01-07</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.shilpanshu.site/project/ai-fashion</loc>
-    <lastmod>2026-01-06</lastmod>
+    <loc>https://www.shilpanshu.site/services</loc>
+    <lastmod>2025-01-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.shilpanshu.site/services/ai-background-remover</loc>
+    <lastmod>2025-01-07</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.shilpanshu.site/project/vto-system</loc>
-    <lastmod>2026-01-06</lastmod>
+    <loc>https://www.shilpanshu.site/services/palette-extractor</loc>
+    <lastmod>2025-01-07</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.shilpanshu.site/project/agv</loc>
-    <lastmod>2026-01-06</lastmod>
+    <loc>https://www.shilpanshu.site/services/file-converter</loc>
+    <lastmod>2025-01-07</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.shilpanshu.site/project/robotic-arm</loc>
-    <lastmod>2026-01-06</lastmod>
+    <loc>https://www.shilpanshu.site/services/resume-improver</loc>
+    <lastmod>2025-01-07</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.shilpanshu.site/project/blender-design</loc>
-    <lastmod>2026-01-06</lastmod>
+    <loc>https://www.shilpanshu.site/services/smart-image-resizer</loc>
+    <lastmod>2025-01-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.shilpanshu.site/services/virtual-try-on</loc>
+    <lastmod>2025-01-07</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 </urlset>
