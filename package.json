@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
-    "@imgly/background-removal": "^1.7.0",
     "@mediapipe/drawing_utils": "^0.3.1675466124",
     "@mediapipe/pose": "^0.5.1675469404",
     "browser-image-compression": "^2.0.2",
@@ -20,7 +19,6 @@
     "framer-motion": "^12.24.0",
     "jspdf": "^3.0.4",
     "lucide-react": "^0.562.0",
-    "onnxruntime-web": "^1.23.2",
     "pdfjs-dist": "^5.4.530",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
