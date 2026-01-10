@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import * as Pose from '@mediapipe/pose';
+import { Pose, POSE_CONNECTIONS, Results, NormalizedLandmarkList } from '@mediapipe/pose';
 import * as DrawingUtils from '@mediapipe/drawing_utils';
 import { Upload, Camera, Ruler, Shirt, ChevronRight, X, Loader2 } from 'lucide-react';
 import Navigation from '../Navigation';
@@ -14,7 +14,7 @@ const VirtualTryOn: React.FC = () => {
     const [imageSrc, setImageSrc] = useState<string | null>(null);
     const [userHeightCm, setUserHeightCm] = useState<string>('175'); // Default calibration height
     const [isAnalyzing, setIsAnalyzing] = useState(false);
-    const [landmarks, setLandmarks] = useState<Pose.NormalizedLandmarkList | null>(null);
+    const [landmarks, setLandmarks] = useState<NormalizedLandmarkList | null>(null);
     const [measurements, setMeasurements] = useState<any>(null);
 
     // Garment State (for Uploads)
@@ -28,11 +28,11 @@ const VirtualTryOn: React.FC = () => {
 
     const imageRef = useRef<HTMLImageElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const poseNetRef = useRef<Pose.Pose | null>(null);
+    const poseNetRef = useRef<Pose | null>(null);
 
     // --- MediaPipe Setup ---
     useEffect(() => {
-        const pose = new Pose.Pose({
+        const pose = new Pose({
             locateFile: (file) => {
                 return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
             }
@@ -53,7 +53,7 @@ const VirtualTryOn: React.FC = () => {
         };
     }, []);
 
-    const onPoseResults = (results: Pose.Results) => {
+    const onPoseResults = (results: Results) => {
         if (!results.poseLandmarks) {
             alert("Could not detect a person. Please try a clearer full-body photo.");
             setIsAnalyzing(false);
@@ -132,7 +132,7 @@ const VirtualTryOn: React.FC = () => {
         };
     };
 
-    const calculateMeasurements = (landmarks: Pose.NormalizedLandmarkList) => {
+    const calculateMeasurements = (landmarks: NormalizedLandmarkList) => {
         const h = parseInt(userHeightCm) || 175;
         setMeasurements({
             shoulder: Math.round(h * 0.24) + ' cm',
