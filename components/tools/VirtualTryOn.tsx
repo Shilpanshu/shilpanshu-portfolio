@@ -1,12 +1,23 @@
+
 import React, { useState, useRef, useEffect } from 'react';
-import { Pose, POSE_CONNECTIONS, Results, NormalizedLandmarkList } from '@mediapipe/pose';
-import * as DrawingUtils from '@mediapipe/drawing_utils';
+// Use Type-Only imports to avoid bundling runtime code
+import type { Results, NormalizedLandmarkList } from '@mediapipe/pose';
 import { Upload, Camera, Ruler, Shirt, ChevronRight, X, Loader2 } from 'lucide-react';
 import Navigation from '../Navigation';
 import ServiceLayout from '../layout/ServiceLayout';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { db } from '../../firebase';
 import { doc, getDoc, runTransaction } from "firebase/firestore";
+
+// Declare globals loaded via CDN in index.html
+declare global {
+    interface Window {
+        Pose: any;
+        drawConnectors: any;
+        drawLandmarks: any;
+        POSE_CONNECTIONS: any;
+    }
+}
 
 const VirtualTryOn: React.FC = () => {
     // --- State ---
@@ -28,30 +39,31 @@ const VirtualTryOn: React.FC = () => {
 
     const imageRef = useRef<HTMLImageElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const poseNetRef = useRef<Pose | null>(null);
+    const poseNetRef = useRef<any>(null); // Use any for the instance to avoid type clashes
 
-    // --- MediaPipe Setup ---
-    useEffect(() => {
-        const pose = new Pose({
-            locateFile: (file) => {
-                return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
+    // --- Helpers defined before usage ---
+    const calculateMeasurements = (landmarks: NormalizedLandmarkList) => {
+        const h = parseInt(userHeightCm) || 175;
+        setMeasurements({
+            shoulder: Math.round(h * 0.24) + ' cm',
+            chest: Math.round(h * 0.53) + ' cm',
+            waist: Math.round(h * 0.45) + ' cm',
+            hips: Math.round(h * 0.55) + ' cm',
+            sleeve: Math.round(h * 0.38) + ' cm',
+            inseam: Math.round(h * 0.45) + ' cm',
+        });
+    };
+
+    const runAnalysis = async (src: string) => {
+        setIsAnalyzing(true);
+        const img = new Image();
+        img.src = src;
+        img.onload = async () => {
+            if (poseNetRef.current) {
+                await poseNetRef.current.send({ image: img });
             }
-        });
-
-        pose.setOptions({
-            modelComplexity: 1,
-            smoothLandmarks: true,
-            minDetectionConfidence: 0.5,
-            minTrackingConfidence: 0.5
-        });
-
-        pose.onResults(onPoseResults);
-        poseNetRef.current = pose;
-
-        return () => {
-            pose.close();
         };
-    }, []);
+    };
 
     const onPoseResults = (results: Results) => {
         if (!results.poseLandmarks) {
@@ -71,7 +83,45 @@ const VirtualTryOn: React.FC = () => {
         }, 1000);
     };
 
-    // --- Helpers ---
+    // --- MediaPipe Setup ---
+    useEffect(() => {
+        // Wait for script to load if not ready
+        const initPose = () => {
+            if (!window.Pose) {
+                console.warn("MediaPipe Pose script not loaded yet, retrying...");
+                setTimeout(initPose, 500);
+                return;
+            }
+
+            console.log("Initializing MediaPipe Pose from CDN...");
+            const pose = new window.Pose({
+                locateFile: (file: string) => {
+                    return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
+                }
+            });
+
+            pose.setOptions({
+                modelComplexity: 1,
+                smoothLandmarks: true,
+                minDetectionConfidence: 0.5,
+                minTrackingConfidence: 0.5
+            });
+
+            pose.onResults(onPoseResults);
+            poseNetRef.current = pose;
+        };
+
+        if (typeof window !== 'undefined') {
+            initPose();
+        }
+
+        return () => {
+            if (poseNetRef.current) {
+                poseNetRef.current.close();
+            }
+        };
+    }, []); // Empty dependency array - run once on mount
+
     const fileToGenerativePart = async (src: string) => {
         const base64EncodedDataPromise = new Promise((resolve) => {
             const img = new Image();
@@ -121,29 +171,6 @@ const VirtualTryOn: React.FC = () => {
         }
     };
 
-    const runAnalysis = async (src: string) => {
-        setIsAnalyzing(true);
-        const img = new Image();
-        img.src = src;
-        img.onload = async () => {
-            if (poseNetRef.current) {
-                await poseNetRef.current.send({ image: img });
-            }
-        };
-    };
-
-    const calculateMeasurements = (landmarks: NormalizedLandmarkList) => {
-        const h = parseInt(userHeightCm) || 175;
-        setMeasurements({
-            shoulder: Math.round(h * 0.24) + ' cm',
-            chest: Math.round(h * 0.53) + ' cm',
-            waist: Math.round(h * 0.45) + ' cm',
-            hips: Math.round(h * 0.55) + ' cm',
-            sleeve: Math.round(h * 0.38) + ' cm',
-            inseam: Math.round(h * 0.45) + ' cm',
-        });
-    };
-
     // --- Gemini VTON Logic ---
     const runGeminiVTON = async () => {
         if (!imageSrc || (!topGarment && !bottomGarment)) {
@@ -165,10 +192,6 @@ const VirtualTryOn: React.FC = () => {
             }
         } catch (e) {
             console.error("Error reading global usage data", e);
-            // Optional: Default to allow if DB fails, or block. 
-            // For now, we log and proceed (soft fail) or maybe we should block?
-            // User asked for limit, but breaking the app if DB is down (or keys missing) is bad.
-            // I'll allow it with a console warning if read fails (likely missing keys).
         }
 
         if (currentUsage >= MAX_DAILY_USES) {
@@ -176,14 +199,13 @@ const VirtualTryOn: React.FC = () => {
             return;
         }
 
-        const apiKey = import.meta.env.VITE_GEMINI_VTON_API_KEY; // Kept internal variable name for build compat
+        const apiKey = import.meta.env.VITE_GEMINI_VTON_API_KEY;
         if (!apiKey) {
             alert("API Key not found. Please ensure VITE_AI_VTON_API_KEY is set in your .env file.");
             return;
         }
 
         setIsGenerating(true);
-        // Using "Nano Banana Pro" (Gemini 3 Pro Preview) internally, but showing generic text to user
         const modelId = 'gemini-3-pro-image-preview';
         setGenerationStatus(`Preparing Advanced AI Model...`);
 
@@ -196,7 +218,7 @@ const VirtualTryOn: React.FC = () => {
 
             const parts: any[] = [];
 
-            // 1. Prompt (User Provided) - Explicitly mentioning order
+            // 1. Prompt 
             parts.push("Use the first uploaded image as the subject and identity reference, and use all subsequent images strictly as clothing references. Replace the subject’s existing clothing with the referenced garments while preserving the subject’s original face, body shape, pose, proportions, skin tone, hairstyle, and facial expression exactly as in the base image. The clothing must be fitted naturally to the body with correct alignment and realistic garment construction, including accurate seams, sleeves, collars, waistlines, hems, and fabric behavior such as drape, thickness, stretch, and natural folds. Maintain the original lighting, shadows, camera perspective, and background with no changes. The final result must be fully photorealistic with high-detail fabric texture, clean edges, correct cloth physics, and no warping, stylization, beautification, body modification, or identity alteration; the image should look like the subject is genuinely wearing the clothes, not edited or pasted. Do not alter facial features in any way—no face replacement, smoothing, or enhancement. Fabric texture must show visible weave, stitching detail, and realistic surface response to light. Garment fit must match the subject’s body scale accurately with no resizing, stretching, or clipping. Do not add accessories, jewelry, styling elements, or additional garments not present in the reference images. The subject’s pose must remain pixel-identical to the original image; do not change body orientation, limb positions, head angle, posture, or camera-relative pose in any way. The task is a clothing replacement only, not a re-render or re-posing. Do not re-generate the person; perform a localized clothing edit on the existing subject only.");
 
             // 2. Subject Image
@@ -232,7 +254,6 @@ const VirtualTryOn: React.FC = () => {
                     console.log("Received text response:", firstPart.text);
                     if (firstPart.text.startsWith('http')) {
                         setGeneratedImage(firstPart.text);
-                        // Increment Usage on Success
                         alert("Model returned text instead of image: " + firstPart.text.substring(0, 50) + "...");
                     }
                 }
@@ -284,9 +305,15 @@ const VirtualTryOn: React.FC = () => {
 
                 // Draw Connectors for Step 2 & 3
                 if (step === 2 || step === 3) {
-                    // HIDDEN: User requested to remove the skeleton overlay
-                    // DrawingUtils.drawConnectors(ctx, landmarks, Pose.POSE_CONNECTIONS, { color: '#00FF00', lineWidth: 2 });
-                    // DrawingUtils.drawLandmarks(ctx, landmarks, { color: '#FF0000', lineWidth: 1, radius: 3 });
+                    // Use window.drawConnectors if available
+                    if (window.drawConnectors && window.POSE_CONNECTIONS) {
+                        try {
+                            window.drawConnectors(ctx, landmarks, window.POSE_CONNECTIONS, { color: '#00FF00', lineWidth: 2 });
+                            window.drawLandmarks(ctx, landmarks, { color: '#FF0000', lineWidth: 1, radius: 3 });
+                        } catch (e) {
+                            console.warn("Drawing utils invalid", e);
+                        }
+                    }
                 }
             }
         }
