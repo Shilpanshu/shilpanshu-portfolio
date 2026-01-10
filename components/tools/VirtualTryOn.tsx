@@ -306,14 +306,15 @@ const VirtualTryOn: React.FC = () => {
                 // Draw Connectors for Step 2 & 3
                 if (step === 2 || step === 3) {
                     // Use window.drawConnectors if available
-                    if (window.drawConnectors && window.POSE_CONNECTIONS) {
-                        try {
-                            window.drawConnectors(ctx, landmarks, window.POSE_CONNECTIONS, { color: '#00FF00', lineWidth: 2 });
-                            window.drawLandmarks(ctx, landmarks, { color: '#FF0000', lineWidth: 1, radius: 3 });
-                        } catch (e) {
-                            console.warn("Drawing utils invalid", e);
-                        }
-                    }
+                    // HIDDEN: User requested to remove the skeleton overlay
+                    // if (window.drawConnectors && window.POSE_CONNECTIONS) {
+                    //     try {
+                    //        window.drawConnectors(ctx, landmarks, window.POSE_CONNECTIONS, { color: '#00FF00', lineWidth: 2 });
+                    //        window.drawLandmarks(ctx, landmarks, { color: '#FF0000', lineWidth: 1, radius: 3 });
+                    //     } catch (e) {
+                    //         console.warn("Drawing utils invalid", e);
+                    //     }
+                    // }
                 }
             }
         }
