@@ -1,14 +1,15 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 
-// Config from your .env (Hardcoded for this script usage)
+// Config - Reads from environment variables
+// Run with: node --env-file=.env scripts/check_usage.js
 const firebaseConfig = {
-    apiKey: "AIzaSyBVF6qA54mk3J5XuWOEZ7PBRkL8xQYObOA",
-    authDomain: "website-2b770.firebaseapp.com",
-    projectId: "website-2b770",
-    storageBucket: "website-2b770.firebasestorage.app",
-    messagingSenderId: "690710287858",
-    appId: "1:690710287858:web:47b4865bbbd152858a076b"
+    apiKey: process.env.VITE_FIREBASE_API_KEY,
+    authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.VITE_FIREBASE_APP_ID
 };
 
 const app = initializeApp(firebaseConfig);
