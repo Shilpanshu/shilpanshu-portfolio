@@ -20,7 +20,17 @@ export default defineConfig(({ mode }) => {
       }
     },
     build: {
-      chunkSizeWarningLimit: 1000,
+      chunkSizeWarningLimit: 1600,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['react', 'react-dom', 'react-router-dom'],
+            firebase: ['firebase/app', 'firebase/firestore'],
+            ui: ['lucide-react', 'framer-motion'],
+            ai: ['@google/generative-ai']
+          }
+        }
+      }
     }
   };
 });

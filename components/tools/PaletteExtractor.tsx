@@ -3,6 +3,7 @@ import ColorThief from 'colorthief';
 import { Upload, Copy, Check, RefreshCw, Image as ImageIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navigation from '../Navigation';
+import ServiceLayout from '../layout/ServiceLayout';
 
 const PaletteExtractor: React.FC = () => {
     const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -48,138 +49,158 @@ const PaletteExtractor: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#0f1115] text-white selection:bg-brand-accent/30">
-            <Navigation />
+        <ServiceLayout
+            title="Free AI Color Palette Generator - Extract Colors from Images"
+            description="Extract beautiful color palettes from any image instantly. Get HEX, RGB, and HSL codes for design projects. Free online color tool."
+            keywords="color palette generator from image, extract colors from image, image to hex, color picker online, design tools, color scheme generator"
+            heroTitle="Extract Color Palettes from Images"
+            heroDescription="Upload any photo and instantly generate a beautiful, harmonious color palette. Copy HEX codes with one click."
+            howItWorks={[
+                { step: "Upload Image", description: "Drag & drop your image (JPG, PNG) to the extractor." },
+                { step: "Analyze Colors", description: "Our algorithm identifies the dominant and accent colors." },
+                { step: "Export Palette", description: "Click any color chip to copy its HEX code instantly." }
+            ]}
+            useCases={["Web Design", "Digital Art", "Branding", "Interior Design", "Fashion"]}
+            faqs={[
+                { question: "Is it free?", answer: "Yes, unlimited extractions." },
+                { question: "How many colors?", answer: "We extract the top 8 dominant colors." },
+                { question: "Is it private?", answer: "Yes, images are processed locally in your browser and never uploaded." },
+                { question: "What formats are supported?", answer: "We support JPG, PNG, and WebP images." }
+            ]}
+        >
+            <div className="min-h-screen bg-[#0f1115] text-white selection:bg-brand-accent/30">
+                <Navigation />
 
-            <div className="max-w-7xl mx-auto px-6 pt-24 pb-12">
-                {/* Header */}
-                <div className="text-center mb-12">
-                    <h1 className="text-4xl md:text-5xl font-display font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 mb-4">
-                        Palette Extractor
-                    </h1>
-                    <p className="text-slate-400 text-lg max-w-xl mx-auto leading-relaxed">
-                        Upload any image to instantly generate a beautiful, harmonious color palette.
-                    </p>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                    {/* Left Column: Image Uploader (Span 7) */}
-                    <div className="lg:col-span-7 space-y-6">
-                        <div className="relative group rounded-3xl overflow-hidden bg-[#181a1f] border border-white/5 shadow-2xl transition-all hover:border-white/10 min-h-[500px] flex flex-col items-center justify-center">
-                            {imageSrc ? (
-                                <>
-                                    <div className="absolute inset-0 bg-checkered opacity-10 pointer-events-none" />
-                                    <img
-                                        ref={imgRef}
-                                        src={imageSrc}
-                                        alt="Preview"
-                                        className="relative max-h-[600px] w-full object-contain p-8 z-10"
-                                        crossOrigin="anonymous"
-                                        onLoad={() => setTimeout(extractColors, 100)}
-                                    />
-
-                                    {/* Action Bar */}
-                                    <div className="absolute top-4 right-4 z-20 flex gap-2">
-                                        <button
-                                            onClick={() => { setImageSrc(null); setPalette(null); }}
-                                            className="bg-black/50 hover:bg-black/70 text-white p-3 rounded-xl backdrop-blur-md transition-all border border-white/10"
-                                            title="Reset Image"
-                                        >
-                                            <RefreshCw className="w-5 h-5" />
-                                        </button>
-                                    </div>
-                                </>
-                            ) : (
-                                <div className="text-center p-12">
-                                    <label className="cursor-pointer group flex flex-col items-center justify-center">
-                                        <div className="w-24 h-24 bg-white/5 rounded-3xl flex items-center justify-center mb-6 border border-white/5 group-hover:scale-110 group-hover:border-brand-accent/30 group-hover:bg-brand-accent/10 transition-all duration-300">
-                                            <Upload className="w-10 h-10 text-slate-400 group-hover:text-brand-accent transition-colors" />
-                                        </div>
-                                        <span className="text-2xl font-medium text-slate-200 mb-2">Upload Image</span>
-                                        <span className="text-slate-500">Drag & drop or click to browse</span>
-                                        <input type="file" className="hidden" accept="image/*" onChange={handleFileUpload} />
-                                    </label>
-                                </div>
-                            )}
-                        </div>
+                <div className="max-w-7xl mx-auto px-6 pt-24 pb-12">
+                    {/* Header */}
+                    <div className="text-center mb-12">
+                        <h1 className="text-4xl md:text-5xl font-display font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 mb-4">
+                            Palette Extractor
+                        </h1>
+                        <p className="text-slate-400 text-lg max-w-xl mx-auto leading-relaxed">
+                            Upload any image to instantly generate a beautiful, harmonious color palette.
+                        </p>
                     </div>
 
-                    {/* Right Column: Colors (Span 5) */}
-                    <div className="lg:col-span-5 space-y-6">
-                        <div className="bg-[#181a1f]/80 backdrop-blur-xl rounded-3xl border border-white/5 p-6 shadow-2xl h-full min-h-[500px] flex flex-col">
-                            <h3 className="text-xl font-medium text-white mb-6 flex items-center gap-2">
-                                <div className="w-1 h-6 bg-brand-accent rounded-full" />
-                                Generated Palette
-                            </h3>
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                        {/* Left Column: Image Uploader (Span 7) */}
+                        <div className="lg:col-span-7 space-y-6">
+                            <div className="relative group rounded-3xl overflow-hidden bg-[#181a1f] border border-white/5 shadow-2xl transition-all hover:border-white/10 min-h-[500px] flex flex-col items-center justify-center">
+                                {imageSrc ? (
+                                    <>
+                                        <div className="absolute inset-0 bg-checkered opacity-10 pointer-events-none" />
+                                        <img
+                                            ref={imgRef}
+                                            src={imageSrc}
+                                            alt="Preview"
+                                            className="relative max-h-[600px] w-full object-contain p-8 z-10"
+                                            crossOrigin="anonymous"
+                                            onLoad={() => setTimeout(extractColors, 100)}
+                                        />
 
-                            {!palette ? (
-                                <div className="flex-1 flex flex-col items-center justify-center text-slate-500 border-2 border-dashed border-white/5 rounded-2xl p-8">
-                                    <ImageIcon className="w-16 h-16 mb-4 opacity-20" />
-                                    <p>Waiting for image...</p>
-                                </div>
-                            ) : (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-fr">
-                                    <AnimatePresence>
-                                        {palette.map((color, index) => (
-                                            <motion.div
-                                                key={index}
-                                                initial={{ opacity: 0, scale: 0.9 }}
-                                                animate={{ opacity: 1, scale: 1 }}
-                                                transition={{ delay: index * 0.05 }}
-                                                className="group relative cursor-pointer overflow-hidden rounded-2xl border border-white/5 hover:border-white/20 transition-all hover:shadow-lg hover:shadow-black/50"
-                                                onClick={() => copyToClipboard(color[0])}
+                                        {/* Action Bar */}
+                                        <div className="absolute top-4 right-4 z-20 flex gap-2">
+                                            <button
+                                                onClick={() => { setImageSrc(null); setPalette(null); }}
+                                                className="bg-black/50 hover:bg-black/70 text-white p-3 rounded-xl backdrop-blur-md transition-all border border-white/10"
+                                                title="Reset Image"
                                             >
-                                                {/* Color Block */}
-                                                <div
-                                                    className="h-24 w-full"
-                                                    style={{ backgroundColor: color[0] }}
-                                                />
+                                                <RefreshCw className="w-5 h-5" />
+                                            </button>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="text-center p-12">
+                                        <label className="cursor-pointer group flex flex-col items-center justify-center">
+                                            <div className="w-24 h-24 bg-white/5 rounded-3xl flex items-center justify-center mb-6 border border-white/5 group-hover:scale-110 group-hover:border-brand-accent/30 group-hover:bg-brand-accent/10 transition-all duration-300">
+                                                <Upload className="w-10 h-10 text-slate-400 group-hover:text-brand-accent transition-colors" />
+                                            </div>
+                                            <span className="text-2xl font-medium text-slate-200 mb-2">Upload Image</span>
+                                            <span className="text-slate-500">Drag & drop or click to browse</span>
+                                            <input type="file" className="hidden" accept="image/*" onChange={handleFileUpload} />
+                                        </label>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
 
-                                                {/* Details */}
-                                                <div className="bg-[#12141a] p-3 flex justify-between items-center">
-                                                    <span className="font-mono text-sm font-bold text-slate-300 group-hover:text-white transition-colors">
-                                                        {color[0]}
-                                                    </span>
-                                                    {copiedColor === color[0] ? (
-                                                        <Check className="w-4 h-4 text-green-400" />
-                                                    ) : (
-                                                        <Copy className="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" />
-                                                    )}
-                                                </div>
+                        {/* Right Column: Colors (Span 5) */}
+                        <div className="lg:col-span-5 space-y-6">
+                            <div className="bg-[#181a1f]/80 backdrop-blur-xl rounded-3xl border border-white/5 p-6 shadow-2xl h-full min-h-[500px] flex flex-col">
+                                <h3 className="text-xl font-medium text-white mb-6 flex items-center gap-2">
+                                    <div className="w-1 h-6 bg-brand-accent rounded-full" />
+                                    Generated Palette
+                                </h3>
 
-                                                {/* Overlay Effect */}
-                                                <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/0 to-black/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                            </motion.div>
-                                        ))}
-                                    </AnimatePresence>
-                                </div>
-                            )}
+                                {!palette ? (
+                                    <div className="flex-1 flex flex-col items-center justify-center text-slate-500 border-2 border-dashed border-white/5 rounded-2xl p-8">
+                                        <ImageIcon className="w-16 h-16 mb-4 opacity-20" />
+                                        <p>Waiting for image...</p>
+                                    </div>
+                                ) : (
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-fr">
+                                        <AnimatePresence>
+                                            {palette.map((color, index) => (
+                                                <motion.div
+                                                    key={index}
+                                                    initial={{ opacity: 0, scale: 0.9 }}
+                                                    animate={{ opacity: 1, scale: 1 }}
+                                                    transition={{ delay: index * 0.05 }}
+                                                    className="group relative cursor-pointer overflow-hidden rounded-2xl border border-white/5 hover:border-white/20 transition-all hover:shadow-lg hover:shadow-black/50"
+                                                    onClick={() => copyToClipboard(color[0])}
+                                                >
+                                                    {/* Color Block */}
+                                                    <div
+                                                        className="h-24 w-full"
+                                                        style={{ backgroundColor: color[0] }}
+                                                    />
 
-                            {/* Tips Footer */}
-                            {palette && (
-                                <div className="mt-6 pt-6 border-t border-white/5 text-center">
-                                    <p className="text-xs text-slate-500">
-                                        Click any color card to copy its Hex code to your clipboard.
-                                    </p>
-                                </div>
-                            )}
+                                                    {/* Details */}
+                                                    <div className="bg-[#12141a] p-3 flex justify-between items-center">
+                                                        <span className="font-mono text-sm font-bold text-slate-300 group-hover:text-white transition-colors">
+                                                            {color[0]}
+                                                        </span>
+                                                        {copiedColor === color[0] ? (
+                                                            <Check className="w-4 h-4 text-green-400" />
+                                                        ) : (
+                                                            <Copy className="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" />
+                                                        )}
+                                                    </div>
+
+                                                    {/* Overlay Effect */}
+                                                    <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/0 to-black/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                                </motion.div>
+                                            ))}
+                                        </AnimatePresence>
+                                    </div>
+                                )}
+
+                                {/* Tips Footer */}
+                                {palette && (
+                                    <div className="mt-6 pt-6 border-t border-white/5 text-center">
+                                        <p className="text-xs text-slate-500">
+                                            Click any color card to copy its Hex code to your clipboard.
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <style>{`
-                .bg-checkered {
-                    background-image: 
-                      linear-gradient(45deg, #333 25%, transparent 25%), 
-                      linear-gradient(-45deg, #333 25%, transparent 25%), 
-                      linear-gradient(45deg, transparent 75%, #333 75%), 
-                      linear-gradient(-45deg, transparent 75%, #333 75%);
-                    background-size: 20px 20px;
-                    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-                }
-            `}</style>
-        </div>
+                <style>{`
+                    .bg-checkered {
+                        background-image: 
+                        linear-gradient(45deg, #333 25%, transparent 25%), 
+                        linear-gradient(-45deg, #333 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, #333 75%), 
+                        linear-gradient(-45deg, transparent 75%, #333 75%);
+                        background-size: 20px 20px;
+                        background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+                    }
+                `}</style>
+            </div>
+        </ServiceLayout>
     );
 };
 

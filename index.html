@@ -8,7 +8,7 @@
   <meta name="description"
     content="Free, privacy-focused online tools running directly in your browser. Remove backgrounds, scan resumes for ATS, extract color palettes, and convert files securely." />
   <meta name="keywords"
-    content="Background Remover, Remove Background, Free, ATS Resume Scanner, Resume Checker, Palette Extractor, Color Picker, File Converter, Online Tools, Privacy Focused, Client Side, Image Resizer, Crop Image, Compress Image" />
+    content="Background Remover, Remove Background, Free, ATS Resume Scanner, Resume Checker, Palette Extractor, Color Picker, File Converter, Online Tools, Privacy Focused, Client Side, Image Resizer, Crop Image, Compress Image, Virtual Try On, AI Fashion, Body Measurements" />
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -51,6 +51,12 @@
           "name": "Smart Image Resizer",
           "applicationCategory": "MultimediaApplication",
           "description": "Crop, resize, and compress images to exact dimensions for social media."
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "AI Virtual Try-On",
+          "applicationCategory": "FashionApplication",
+          "description": "Visualize garments on your body with AI measurements and virtual overlay."
         }
       ]
     }
@@ -153,16 +159,8 @@
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
     }
   </style>
-  <script type="importmap">
-    {
-      "imports": {
-        "react": "https://esm.sh/react@^19.2.3",
-        "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-        "react/": "https://esm.sh/react@^19.2.3/",
-        "lucide-react": "https://esm.sh/lucide-react@^0.562.0"
-      }
-    }
-    </script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="/index.css">
 </head>
 

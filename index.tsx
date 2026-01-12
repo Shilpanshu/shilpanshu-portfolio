@@ -7,9 +7,17 @@ if (!rootElement) {
   throw new Error("Could not find root element to mount to");
 }
 
+import { HelmetProvider } from 'react-helmet-async';
+
+import ErrorBoundary from './components/ErrorBoundary';
+
 const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
-    <App />
+    <ErrorBoundary>
+      <HelmetProvider>
+        <App />
+      </HelmetProvider>
+    </ErrorBoundary>
   </React.StrictMode>
 );

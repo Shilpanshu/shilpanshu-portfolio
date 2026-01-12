@@ -10,10 +10,14 @@ import PaletteExtractor from './components/tools/PaletteExtractor';
 import FileConverter from './components/tools/FileConverter';
 import ResumeImprover from './components/tools/ResumeImprover';
 import SmartImageResizer from './components/tools/SmartImageResizer';
+import VirtualTryOn from './components/tools/VirtualTryOn';
+
+import ScrollToTop from './components/ScrollToTop';
 
 const App: React.FC = () => {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <div className="bg-brand-dark min-h-screen text-slate-200">
         <Cursor />
         <Routes>
@@ -24,6 +28,7 @@ const App: React.FC = () => {
           <Route path="/services/file-converter" element={<FileConverter />} />
           <Route path="/services/resume-improver" element={<ResumeImprover />} />
           <Route path="/services/smart-image-resizer" element={<SmartImageResizer />} />
+          <Route path="/services/virtual-try-on" element={<VirtualTryOn />} />
           <Route path="/project/ai-fashion" element={<AIGeneration />} />
           <Route path="/project/:id" element={<ProjectPage />} />
         </Routes>

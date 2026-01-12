@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Eraser, FileText, Palette, FileOutput, ArrowRight, ScanSearch, Crop } from 'lucide-react';
+import { Eraser, FileText, Palette, FileOutput, ArrowRight, ScanSearch, Crop, Shirt } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Navigation from './Navigation';
 
@@ -17,7 +17,7 @@ const tools = [
   {
     id: 'resume-improver',
     title: 'ATS Resume Scanner',
-    description: 'Beat the hiring bots. Get an instant match score and missing keywords check using Gemini AI.',
+    description: 'Beat the hiring bots. Get an instant match score and missing keywords check using Advanced AI.',
     icon: ScanSearch,
     color: 'text-purple-400',
     gradient: 'from-blue-500/20 to-purple-500/20',
@@ -49,6 +49,15 @@ const tools = [
     color: 'text-teal-400',
     gradient: 'from-teal-500/20 to-cyan-500/20',
     link: '/services/smart-image-resizer'
+  },
+  {
+    id: 'virtual-try-on',
+    title: 'AI Virtual Try-On',
+    description: 'Visualize garments on your body with AI measurements and overlay.',
+    icon: Shirt,
+    color: 'text-purple-400',
+    gradient: 'from-purple-500/20 to-pink-500/20',
+    link: '/services/virtual-try-on'
   }
 ];
 

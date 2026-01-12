@@ -2,6 +2,13 @@ fastapi
 uvicorn
 python-multipart
 ultralytics
-numpy
+numpy<2.0
 pillow
 opencv-python-headless
+transformers
+torch
+torchvision
+timm
+accelerate
+einops
+kornia

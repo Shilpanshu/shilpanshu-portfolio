@@ -3,6 +3,7 @@ import Cropper from 'react-easy-crop';
 import imageCompression from 'browser-image-compression';
 import { Upload, Download, Crop, Image as ImageIcon, Check, Loader2, AlertCircle, Maximize2, RotateCw } from 'lucide-react';
 import Navigation from '../Navigation';
+import ServiceLayout from '../layout/ServiceLayout';
 
 // --- Types ---
 type AspectRatio = { label: string, value: number, width: number, height: number };
@@ -131,225 +132,245 @@ const SmartImageResizer: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#0f1115] text-white">
-            <Navigation />
-            <div className="max-w-7xl mx-auto px-6 pt-24 pb-12">
+        <ServiceLayout
+            title="Free AI Smart Image Resizer - Resize & Upscale Online"
+            description="Resize and upscale images intelligently without losing quality. Perfect for social media, print, and web. Free online tool."
+            keywords="AI image resizer, smart upscale, image enlarger free, resize image 4k, social media image resizer, instagram resizer"
+            heroTitle="Resize and Upscale Images with AI"
+            heroDescription="Intelligently resize images for any platform. Crop, scale, and upscale low-res photos to 4K clarity without artifacts."
+            howItWorks={[
+                { step: "Upload Image", description: "Drag & drop your JPG, PNG, or WebP file to begin." },
+                { step: "Choose Target", description: "Select a preset (Instagram, LinkedIn, YouTube) or define custom dimensions." },
+                { step: "Smart Process", description: "Our AI-enhanced logic resizes and sharpens the image instantly." }
+            ]}
+            useCases={["Social Media Posts", "Printing High-Res", "Web Optimization", "Restoring Old Photos", "E-commerce Product Images"]}
+            faqs={[
+                { question: "Does it lose quality?", answer: "Our smart algorithms minimize quality loss. For upscaling, we use interpolation to maintain sharpness." },
+                { question: "What formats are supported?", answer: "We support JPG, PNG, and WebP for both input and output." },
+                { question: "Is it secure?", answer: "Yes, all processing happens locally in your browser. Your images are never uploaded to a server." },
+                { question: "Can I crop images?", answer: "Yes, the tool includes a fully featured cropper with aspect ratio presets." }
+            ]}
+        >
+            <div className="min-h-screen bg-[#0f1115] text-white">
+                <Navigation />
+                <div className="max-w-7xl mx-auto px-6 pt-24 pb-12">
 
-                {/* Header */}
-                <div className="text-center mb-10">
-                    <h1 className="text-4xl md:text-5xl font-display font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-cyan-400 mb-4">
-                        Smart Image Resizer
-                    </h1>
-                    <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-                        Crop, resize, and compress images securely in your browser. Perfect for social media and web assets.
-                    </p>
-                </div>
-
-                {!imageSrc ? (
-                    // --- Upload State ---
-                    <div className="max-w-2xl mx-auto bg-[#181a1f] border border-white/5 rounded-3xl p-12 text-center">
-                        <div className="w-20 h-20 bg-teal-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <Upload className="w-10 h-10 text-teal-400" />
-                        </div>
-                        <h3 className="text-xl font-bold text-white mb-2">Upload an Image</h3>
-                        <p className="text-slate-500 mb-8">JPG, PNG, or WEBP (Max 20MB)</p>
-                        <label className="inline-flex items-center gap-2 bg-teal-500 hover:bg-teal-400 text-black font-bold px-8 py-3 rounded-xl cursor-pointer transition-colors">
-                            <ImageIcon className="w-5 h-5" />
-                            Select Image
-                            <input type="file" accept="image/*" className="hidden" onChange={onFileChange} />
-                        </label>
+                    {/* Header */}
+                    <div className="text-center mb-10">
+                        <h1 className="text-4xl md:text-5xl font-display font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-cyan-400 mb-4">
+                            Smart Image Resizer
+                        </h1>
+                        <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+                            Crop, resize, and compress images securely in your browser. Perfect for social media and web assets.
+                        </p>
                     </div>
-                ) : (
-                    // --- Editor State ---
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-[calc(100vh-250px)] min-h-[600px]">
 
-                        {/* 1. Left Controls (Settings) */}
-                        <div className="bg-[#181a1f] border border-white/5 rounded-2xl p-6 overflow-y-auto custom-scrollbar flex flex-col gap-6">
+                    {!imageSrc ? (
+                        // --- Upload State ---
+                        <div className="max-w-2xl mx-auto bg-[#181a1f] border border-white/5 rounded-3xl p-12 text-center">
+                            <div className="w-20 h-20 bg-teal-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <Upload className="w-10 h-10 text-teal-400" />
+                            </div>
+                            <h3 className="text-xl font-bold text-white mb-2">Upload an Image</h3>
+                            <p className="text-slate-500 mb-8">JPG, PNG, or WEBP (Max 20MB)</p>
+                            <label className="inline-flex items-center gap-2 bg-teal-500 hover:bg-teal-400 text-black font-bold px-8 py-3 rounded-xl cursor-pointer transition-colors">
+                                <ImageIcon className="w-5 h-5" />
+                                Select Image
+                                <input type="file" accept="image/*" className="hidden" onChange={onFileChange} />
+                            </label>
+                        </div>
+                    ) : (
+                        // --- Editor State ---
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-[calc(100vh-250px)] min-h-[600px]">
 
-                            {/* Dimension Settings */}
-                            <div>
-                                <h3 className="font-bold text-slate-300 mb-4 flex items-center gap-2">
-                                    <Maximize2 className="w-4 h-4 text-teal-400" /> Dimensions
-                                </h3>
-                                <div className="grid grid-cols-2 gap-2 mb-4">
-                                    {ASPECT_RATIOS.map(p => (
-                                        <button
-                                            key={p.label}
-                                            onClick={() => setSelectedPreset(p)}
-                                            className={`text-xs p-2 rounded-lg border transition-all ${selectedPreset.label === p.label ? 'bg-teal-500/20 border-teal-500 text-white' : 'bg-black/20 border-white/5 text-slate-400 hover:bg-white/5'}`}
-                                        >
-                                            {p.label}
-                                        </button>
-                                    ))}
+                            {/* 1. Left Controls (Settings) */}
+                            <div className="bg-[#181a1f] border border-white/5 rounded-2xl p-6 overflow-y-auto custom-scrollbar flex flex-col gap-6">
+
+                                {/* Dimension Settings */}
+                                <div>
+                                    <h3 className="font-bold text-slate-300 mb-4 flex items-center gap-2">
+                                        <Maximize2 className="w-4 h-4 text-teal-400" /> Dimensions
+                                    </h3>
+                                    <div className="grid grid-cols-2 gap-2 mb-4">
+                                        {ASPECT_RATIOS.map(p => (
+                                            <button
+                                                key={p.label}
+                                                onClick={() => setSelectedPreset(p)}
+                                                className={`text-xs p-2 rounded-lg border transition-all ${selectedPreset.label === p.label ? 'bg-teal-500/20 border-teal-500 text-white' : 'bg-black/20 border-white/5 text-slate-400 hover:bg-white/5'}`}
+                                            >
+                                                {p.label}
+                                            </button>
+                                        ))}
+                                    </div>
+
+                                    {selectedPreset.label === 'Custom' && (
+                                        <div className="flex gap-2">
+                                            <div className="flex-1">
+                                                <label className="text-[10px] uppercase text-slate-500 font-bold">Width</label>
+                                                <input
+                                                    type="number"
+                                                    value={customDim.width}
+                                                    onChange={e => setCustomDim(d => ({ ...d, width: parseInt(e.target.value) || 0 }))}
+                                                    className="w-full bg-black/30 border border-white/10 rounded p-2 text-sm focus:border-teal-500 outline-none"
+                                                />
+                                            </div>
+                                            <div className="flex-1">
+                                                <label className="text-[10px] uppercase text-slate-500 font-bold">Height</label>
+                                                <input
+                                                    type="number"
+                                                    value={customDim.height}
+                                                    onChange={e => setCustomDim(d => ({ ...d, height: parseInt(e.target.value) || 0 }))}
+                                                    className="w-full bg-black/30 border border-white/10 rounded p-2 text-sm focus:border-teal-500 outline-none"
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
 
-                                {selectedPreset.label === 'Custom' && (
-                                    <div className="flex gap-2">
-                                        <div className="flex-1">
-                                            <label className="text-[10px] uppercase text-slate-500 font-bold">Width</label>
-                                            <input
-                                                type="number"
-                                                value={customDim.width}
-                                                onChange={e => setCustomDim(d => ({ ...d, width: parseInt(e.target.value) || 0 }))}
-                                                className="w-full bg-black/30 border border-white/10 rounded p-2 text-sm focus:border-teal-500 outline-none"
+                                <hr className="border-white/5" />
+
+                                {/* Compression Settings */}
+                                <div>
+                                    <h3 className="font-bold text-slate-300 mb-4 flex items-center gap-2">
+                                        <Download className="w-4 h-4 text-purple-400" /> Output
+                                    </h3>
+                                    <div className="space-y-4">
+                                        <div>
+                                            <label className="text-xs text-slate-400 mb-1 block">Format</label>
+                                            <div className="flex bg-black/20 p-1 rounded-lg">
+                                                {['jpeg', 'png', 'webp'].map(fmt => (
+                                                    <button
+                                                        key={fmt}
+                                                        onClick={() => setOutputFormat(fmt as any)}
+                                                        className={`flex-1 text-xs py-1.5 rounded-md uppercase transition-all ${outputFormat === fmt ? 'bg-white/10 text-white' : 'text-slate-500'}`}
+                                                    >
+                                                        {fmt}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="text-xs text-slate-400 mb-1 block">Target Size (Optional)</label>
+                                            <div className="relative">
+                                                <input
+                                                    type="number"
+                                                    step="1"
+                                                    placeholder="e.g. 500"
+                                                    value={targetSizeKB}
+                                                    onChange={(e) => setTargetSizeKB(e.target.value)}
+                                                    className="w-full bg-black/30 border border-white/10 rounded p-2 text-sm focus:border-purple-500 outline-none pr-8"
+                                                />
+                                                <span className="absolute right-3 top-2 text-xs text-slate-500">KB</span>
+                                            </div>
+                                            <p className="text-[10px] text-slate-600 mt-1">Leave empty for max quality.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="mt-auto pt-4">
+                                    <button
+                                        onClick={createCroppedImage}
+                                        disabled={isProcessing}
+                                        className="w-full py-3 bg-teal-500 hover:bg-teal-400 text-black font-bold rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        {isProcessing ? <Loader2 className="w-5 h-5 animate-spin" /> : <Crop className="w-5 h-5" />}
+                                        Process Image
+                                    </button>
+                                    {error && <p className="text-red-400 text-xs text-center mt-2">{error}</p>}
+                                </div>
+                            </div>
+
+                            {/* 2. Main Canvas (Center) */}
+                            <div className="lg:col-span-2 bg-[#0a0b0d] rounded-2xl border border-white/5 relative overflow-hidden flex flex-col">
+                                {!processedImage ? (
+                                    <>
+                                        <div className="relative flex-1 bg-checkered">
+                                            <Cropper
+                                                image={imageSrc}
+                                                crop={crop}
+                                                zoom={zoom}
+                                                rotation={rotation}
+                                                aspect={(selectedPreset.label === 'Custom' ? customDim.width / customDim.height : selectedPreset.value)}
+                                                onCropChange={setCrop}
+                                                onZoomChange={setZoom}
+                                                onRotationChange={setRotation}
+                                                onCropComplete={onCropComplete}
+                                                objectFit="contain"
                                             />
                                         </div>
-                                        <div className="flex-1">
-                                            <label className="text-[10px] uppercase text-slate-500 font-bold">Height</label>
-                                            <input
-                                                type="number"
-                                                value={customDim.height}
-                                                onChange={e => setCustomDim(d => ({ ...d, height: parseInt(e.target.value) || 0 }))}
-                                                className="w-full bg-black/30 border border-white/10 rounded p-2 text-sm focus:border-teal-500 outline-none"
+
+                                        {/* Canvas Controls */}
+                                        <div className="bg-[#12141a] p-4 flex items-center gap-6 border-t border-white/5 z-10">
+                                            <div className="flex-1 flex items-center gap-3">
+                                                <span className="text-xs text-slate-400">Zoom</span>
+                                                <input
+                                                    type="range" min={1} max={3} step={0.1}
+                                                    value={zoom} onChange={(e) => setZoom(parseFloat(e.target.value))}
+                                                    className="flex-1 h-1 bg-white/10 rounded-full appearance-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-teal-400"
+                                                />
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <button onClick={() => setRotation(r => r - 90)} className="p-2 hover:bg-white/10 rounded text-slate-400 hover:text-white"><RotateCw className="w-4 h-4 -scale-x-100" /></button>
+                                                <button onClick={() => setRotation(r => r + 90)} className="p-2 hover:bg-white/10 rounded text-slate-400 hover:text-white"><RotateCw className="w-4 h-4" /></button>
+                                            </div>
+                                        </div>
+                                    </>
+                                ) : (
+                                    // --- Result View ---
+                                    <div className="absolute inset-0 flex flex-col bg-checkered">
+                                        {/* Image Area: Takes available space, centers image */}
+                                        <div className="flex-1 overflow-hidden p-8 flex items-center justify-center">
+                                            <img
+                                                src={processedImage}
+                                                alt="Processed"
+                                                className="max-w-full max-h-full object-contain shadow-2xl rounded-lg border border-white/10"
                                             />
+                                        </div>
+
+                                        {/* Controls Area: Fixed at bottom */}
+                                        <div className="flex-none p-6 bg-[#181a1f] border-t border-white/10 flex items-center justify-center z-10 w-full">
+                                            <div className="max-w-md w-full flex flex-col gap-4">
+                                                <div className="flex items-center justify-between text-sm text-slate-400 bg-black/20 px-4 py-2 rounded-lg border border-white/5">
+                                                    <div className="flex items-center gap-2 text-white font-medium"><Check className="w-4 h-4 text-green-400" /> Ready</div>
+                                                    <div className="font-mono text-xs">{processedInfo?.width}x{processedInfo?.height} • {processedInfo?.size} • {outputFormat.toUpperCase()}</div>
+                                                </div>
+                                                <div className="flex gap-3">
+                                                    <button
+                                                        onClick={() => setProcessedImage(null)}
+                                                        className="flex-1 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium transition-colors"
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                    <a
+                                                        href={processedImage}
+                                                        download={`resized_${processedInfo?.width}x${processedInfo?.height}.${outputFormat}`}
+                                                        className="flex-[2] py-3 rounded-xl bg-teal-500 hover:bg-teal-400 text-black font-bold flex items-center justify-center gap-2 transition-colors shadow-lg shadow-teal-500/20"
+                                                    >
+                                                        <Download className="w-4 h-4" /> Download Image
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 )}
                             </div>
-
-                            <hr className="border-white/5" />
-
-                            {/* Compression Settings */}
-                            <div>
-                                <h3 className="font-bold text-slate-300 mb-4 flex items-center gap-2">
-                                    <Download className="w-4 h-4 text-purple-400" /> Output
-                                </h3>
-                                <div className="space-y-4">
-                                    <div>
-                                        <label className="text-xs text-slate-400 mb-1 block">Format</label>
-                                        <div className="flex bg-black/20 p-1 rounded-lg">
-                                            {['jpeg', 'png', 'webp'].map(fmt => (
-                                                <button
-                                                    key={fmt}
-                                                    onClick={() => setOutputFormat(fmt as any)}
-                                                    className={`flex-1 text-xs py-1.5 rounded-md uppercase transition-all ${outputFormat === fmt ? 'bg-white/10 text-white' : 'text-slate-500'}`}
-                                                >
-                                                    {fmt}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label className="text-xs text-slate-400 mb-1 block">Target Size (Optional)</label>
-                                        <div className="relative">
-                                            <input
-                                                type="number"
-                                                step="1"
-                                                placeholder="e.g. 500"
-                                                value={targetSizeKB}
-                                                onChange={(e) => setTargetSizeKB(e.target.value)}
-                                                className="w-full bg-black/30 border border-white/10 rounded p-2 text-sm focus:border-purple-500 outline-none pr-8"
-                                            />
-                                            <span className="absolute right-3 top-2 text-xs text-slate-500">KB</span>
-                                        </div>
-                                        <p className="text-[10px] text-slate-600 mt-1">Leave empty for max quality.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="mt-auto pt-4">
-                                <button
-                                    onClick={createCroppedImage}
-                                    disabled={isProcessing}
-                                    className="w-full py-3 bg-teal-500 hover:bg-teal-400 text-black font-bold rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    {isProcessing ? <Loader2 className="w-5 h-5 animate-spin" /> : <Crop className="w-5 h-5" />}
-                                    Process Image
-                                </button>
-                                {error && <p className="text-red-400 text-xs text-center mt-2">{error}</p>}
-                            </div>
                         </div>
+                    )}
+                </div>
 
-                        {/* 2. Main Canvas (Center) */}
-                        <div className="lg:col-span-2 bg-[#0a0b0d] rounded-2xl border border-white/5 relative overflow-hidden flex flex-col">
-                            {!processedImage ? (
-                                <>
-                                    <div className="relative flex-1 bg-checkered">
-                                        <Cropper
-                                            image={imageSrc}
-                                            crop={crop}
-                                            zoom={zoom}
-                                            rotation={rotation}
-                                            aspect={(selectedPreset.label === 'Custom' ? customDim.width / customDim.height : selectedPreset.value)}
-                                            onCropChange={setCrop}
-                                            onZoomChange={setZoom}
-                                            onRotationChange={setRotation}
-                                            onCropComplete={onCropComplete}
-                                            objectFit="contain"
-                                        />
-                                    </div>
-
-                                    {/* Canvas Controls */}
-                                    <div className="bg-[#12141a] p-4 flex items-center gap-6 border-t border-white/5 z-10">
-                                        <div className="flex-1 flex items-center gap-3">
-                                            <span className="text-xs text-slate-400">Zoom</span>
-                                            <input
-                                                type="range" min={1} max={3} step={0.1}
-                                                value={zoom} onChange={(e) => setZoom(parseFloat(e.target.value))}
-                                                className="flex-1 h-1 bg-white/10 rounded-full appearance-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-teal-400"
-                                            />
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <button onClick={() => setRotation(r => r - 90)} className="p-2 hover:bg-white/10 rounded text-slate-400 hover:text-white"><RotateCw className="w-4 h-4 -scale-x-100" /></button>
-                                            <button onClick={() => setRotation(r => r + 90)} className="p-2 hover:bg-white/10 rounded text-slate-400 hover:text-white"><RotateCw className="w-4 h-4" /></button>
-                                        </div>
-                                    </div>
-                                </>
-                            ) : (
-                                // --- Result View ---
-                                <div className="absolute inset-0 flex flex-col bg-checkered">
-                                    {/* Image Area: Takes available space, centers image */}
-                                    <div className="flex-1 overflow-hidden p-8 flex items-center justify-center">
-                                        <img
-                                            src={processedImage}
-                                            alt="Processed"
-                                            className="max-w-full max-h-full object-contain shadow-2xl rounded-lg border border-white/10"
-                                        />
-                                    </div>
-
-                                    {/* Controls Area: Fixed at bottom */}
-                                    <div className="flex-none p-6 bg-[#181a1f] border-t border-white/10 flex items-center justify-center z-10 w-full">
-                                        <div className="max-w-md w-full flex flex-col gap-4">
-                                            <div className="flex items-center justify-between text-sm text-slate-400 bg-black/20 px-4 py-2 rounded-lg border border-white/5">
-                                                <div className="flex items-center gap-2 text-white font-medium"><Check className="w-4 h-4 text-green-400" /> Ready</div>
-                                                <div className="font-mono text-xs">{processedInfo?.width}x{processedInfo?.height} • {processedInfo?.size} • {outputFormat.toUpperCase()}</div>
-                                            </div>
-                                            <div className="flex gap-3">
-                                                <button
-                                                    onClick={() => setProcessedImage(null)}
-                                                    className="flex-1 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium transition-colors"
-                                                >
-                                                    Edit
-                                                </button>
-                                                <a
-                                                    href={processedImage}
-                                                    download={`resized_${processedInfo?.width}x${processedInfo?.height}.${outputFormat}`}
-                                                    className="flex-[2] py-3 rounded-xl bg-teal-500 hover:bg-teal-400 text-black font-bold flex items-center justify-center gap-2 transition-colors shadow-lg shadow-teal-500/20"
-                                                >
-                                                    <Download className="w-4 h-4" /> Download Image
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                )}
+                <style>{`
+                    .bg-checkered {
+                        background-image: 
+                          linear-gradient(45deg, #15171c 25%, transparent 25%), 
+                          linear-gradient(-45deg, #15171c 25%, transparent 25%), 
+                          linear-gradient(45deg, transparent 75%, #15171c 75%), 
+                          linear-gradient(-45deg, transparent 75%, #15171c 75%);
+                        background-size: 20px 20px;
+                        background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+                    }
+                `}</style>
             </div>
-
-            <style>{`
-                .bg-checkered {
-                    background-image: 
-                      linear-gradient(45deg, #15171c 25%, transparent 25%), 
-                      linear-gradient(-45deg, #15171c 25%, transparent 25%), 
-                      linear-gradient(45deg, transparent 75%, #15171c 75%), 
-                      linear-gradient(-45deg, transparent 75%, #15171c 75%);
-                    background-size: 20px 20px;
-                    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-                }
-            `}</style>
-        </div>
+        </ServiceLayout>
     );
 };
 
